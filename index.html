@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raças de Cachorro</title>
+  <link rel="shortcut icon" href="./assets/favicon.svg" type="image/x-icon">
+  <link rel="stylesheet" href="./reset.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  <div>
+    <header class="bg-gray-300">
+      <div
+        class="max-sm:flex-col max-sm:h-32 max-sm:justify-center max-sm:px-4 container mx-auto px-6 flex sm:justify-between items-center h-24">
+        <div class="max-sm:w-full max-sm:mb-2 max-sm:justify-center flex items-center">
+          <img src="./assets/dog-icon.jpg" alt="icone de cachorro" class="h-14 max-sm:h-10 mr-2 rounded-full" />
+          <h1 class="font-bold text-3xl">Raças de Cachorro</h1>
+        </div>
+        <div id="loggedinContainer" class="flex gap-5 hidden">
+          <span id="loggedinMsg"
+            class="bg-black rounded-full text-white block w-10 h-10 flex justify-center items-center"></span>
+          <img id="logoutIcon" src="./assets/logout.svg" alt="icone de fazer logout" class="cursor-pointer">
+        </div>
+      </div>
+    </header>
+
+    <main class="max-sm:min-h-[calc(100vh-120px)] min-h-[calc(100vh-100px)] bg-gray-100">
+
+      <div id="loginPage" class="max-sm:h-[calc(100vh-120px)] h-[calc(100vh-100px)] bg-teal-400">
+        <section class="container mx-auto flex h-full justify-center max-md:gap-8 max-lg:gap-40 gap-72">
+          <div class="flex justify-center items-center">
+            <img src="./assets/login-imgs/dog-login.png" class="">
+          </div>
+          <div class="flex flex-col justify-center items-center gap-8">
+            <h2 class="font-bold text-4xl w-full text-center">Faça seu Login</h2>
+            <div id="formContainer">
+              <div id="formTabs" class="">
+                <a id="loginTab" class="inline-block py-3 px-8 cursor-pointer font-bold rounded-t-xl">Login</a>
+                <a id="registerTab"
+                  class="inline-block py-3 px-8 pointer cursor-pointer font-bold rounded-t-xl">Registrar</a>
+              </div>
+              <form id="loginForm" class="p-8 w-[35rem] bg-white rounded-b-xl">
+                <div class="mb-5 w-full">
+                  <label for="email" class="block w-full">Email:</label>
+                  <input type="email" name="email" id="email" placeholder="exemplo@email.com"
+                    class="p-3 rounded w-full">
+                  <span id="loginEmailSpan" class="text-red-600 text-2xl"></span>
+                </div>
+                <div class="w-full">
+                  <label for="password" class="block w-full">Senha:</label>
+                  <input type="password" name="password" id="password" placeholder="********"
+                    class="p-3 rounded w-full">
+                  <span id="loginPasswordSpan" class="text-red-600 text-2xl"></span>
+                </div>
+                <button id="btnLogin" class="bg-teal-800 text-white py-3 w-full rounded mt-10">Login</button>
+              </form>
+              <form id="registerForm" class="p-8 w-[35rem] bg-white rounded-b-xl hidden">
+                <div class="mb-5 w-full">
+                  <label for="registerEmail" class="block w-full">Email:</label>
+                  <input type="registerEmail" name="registerEmail" id="registerEmail" placeholder="exemplo@email.com"
+                    class="p-3 rounded w-full">
+                  <span id="registerEmailSpan" class="text-red-600 text-2xl"></span>
+                </div>
+                <div class="w-full relative">
+                  <label for="registerPass" class="block w-full">Senha:</label>
+                  <input type="password" name="registerPass" id="registerPass" placeholder="********"
+                    class="p-3 rounded w-full">
+                  <span id="registerPassSpan" class="text-red-600 text-2xl"></span>
+                  <div id="registerEyes" class="absolute right-2 top-14">
+                    <img id="registerOpenEye" src="./assets/login-imgs/eye-open.svg" alt="icone olho aberto"
+                      class="w-8 cursor-pointer">
+                    <img id="regiserClosedEye" src="./assets/login-imgs/eye-closed.svg" alt="icone olho fechado"
+                      class="hidden w-8 cursor-pointer">
+                  </div>
+                </div>
+                <button id="btnRegister" class="bg-teal-800 text-white py-3 w-full rounded mt-10">Registrar</button>
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div id="homePage" class="hidden max-sm:min-h-[calc(100vh-120px)] min-h-[calc(100vh-100px)] bg-gray-100">
+        <section id="banner">
+          <img src="./assets/home-imgs/dog-banner.jpg" alt="banner cachorro"
+            class="max-sm:h-48 max-lg:h-80 max-2xl:h-96 h-[30rem] w-full object-cover">
+        </section>
+
+        <section>
+          <div class="container mx-auto px-6">
+            <div class="mt-8 h-16 flex items-center justify-between">
+              <h2 class="font-bold text-4xl">Raças Cadastradas</h2>
+              <button id="btnAddBreed" class="border-2 rounded-lg py-2 px-3 bg-teal-300 border-solid">Adicionar nova
+                raça</button>
+            </div>
+
+            <div id="listContainer">
+
+            </div>
+          </div>
+
+          <div id="formPopup" class="fixed left-0 right-0 top-0 h-screen hidden">
+            <div id="formOverlay" class="w-full h-full bg-gray-500 bg-opacity-50 flex items-center justify-center">
+              <div id="formContainer" class="bg-white p-8 rounded-lg max-h-[95vh] max-w-[95vw] overflow-y-auto overflow-x-hidden relative">
+                <button id="btnCloseBreedForm" class="absolute right-3 top-1 text-4xl rotate-45 ">+</button>
+                <h1 class="font-bold mb-5 text-3xl text-center">Adicionar Nova Raça</h1>
+
+                <form id="newBreedForm">
+                  <div class="mb-4">
+                    <div class="flex">
+                      <label for="breedName" class="inline-block mr-3 flex items-center">Nome:</label>
+                      <input placeholder="Nome da raça" type="text" name="breedName" id="breedName"
+                        class="w-full border border-solid border-gray-300 rounded-lg p-2">
+                    </div>
+                    <span id="breedNameSpan" class="text-red-600 text-2xl block"></span>
+                  </div>
+                  <div class="mb-4">
+                    <div class="flex">
+                      <label for="breedImageLink" class="inline-block mr-3 flex items-center">Foto:</label>
+                      <input placeholder="Link da foto do cachorro" type="text" name="breedImageLink"
+                        id="breedImageLink" class="w-full border border-solid border-gray-300 rounded-lg p-2">
+                    </div>
+                    <span id="breedImageLinkSpan" class="text-red-600 text-2xl block"></span>
+                    <div id="imgPreviewContainer"
+                      class="h-52 max-sm:w-full w-[40rem] mt-2 bg-gray-100 rounded-lg border border-solid border-gray-300 flex justify-center items-center">
+                      <img id="imgPreview" src="./assets/home-imgs/img-icon.svg" alt="icone de uma imagem/foto"
+                        class="opacity-30">
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="flex">
+                      <label for="breedCountry" class="inline-block mr-3 flex items-center whitespace-nowrap">País de
+                        Origem:</label>
+                      <select name="breedCountry" id="breedCountry"
+                        class="cursor-pointer w-full border border-solid border-gray-300 rounded-lg p-2">
+                        <option value="" disabled selected>Selecione um país</option>
+                      </select>
+                    </div>
+                    <span id="breedCountrySpan" class="text-red-600 text-2xl block"></span>
+                  </div>
+                  <div class="mb-4">
+                    <div class="flex">
+                      <label for="breedYear" class="inline-block mr-3 flex items-center whitespace-nowrap">Ano de
+                        Origem:</label>
+                      <input type="number" name="breedYear" id="breedYear" placeholder="ex: 2023"
+                        class="cursor-pointer w-full border border-solid border-gray-300 rounded-lg p-2">
+                    </div>
+                    <span id="breedYearSpan" class="text-red-600 text-2xl block"></span>
+                  </div>
+                  <div class="mb-8">
+                    <label for="breedDescription" class="block w-full">Descrição:</label>
+                    <textarea name="breedDescription" id="breedDescription" cols="30" rows="3"
+                      class="resize-none w-full border border-solid border-gray-300 rounded-lg p-2"></textarea>
+                    <span id="breedDescriptionSpan" class="text-red-600 text-2xl block"></span>
+                  </div>
+
+                  <button class="w-full bg-teal-300 p-3 rounded-lg">Registrar</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="bg-gray-300">
+      <div class="max-sm:px-4 container mx-auto px-6 h-16 flex justify-center items-center">
+        <p class="text-center">Desenvolvido por Diego Ferreira</p>
+      </div>
+    </footer>
+  </div>
+  <script type="module" src="./script.js"></script>
+</body>
+
+</html>
