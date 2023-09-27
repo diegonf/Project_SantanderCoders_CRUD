@@ -20,7 +20,7 @@ export const countryList = [
   'México', 'Mianmar', 'Micronésia', 'Moçambique', 'Moldávia', 'Mônaco', 'Mongólia', 'Montenegro', 'Montserrat',
   'Namíbia', 'Nauru', 'Nepal', 'Nicarágua', 'Níger', 'Nigéria', 'Niue', 'Noruega', 'Nova Caledônia', 'Nova Zelândia',
   'Omã', 'Palau', 'Palestina', 'Panamá', 'Papua-Nova Guiné', 'Paquistão', 'Paraguai', 'Peru', 'Pitcairn',
-  'Polinésia Francesa', 'Polônia', 'Porto Rico', 'Portugal', 'Quênia', 'Quirguistão', 'Tailândia', 'Taiwan', 'Tanzânia',
+  'Polinésia Francesa', 'Polônia', 'Porto Rico', 'Portugal', 'Quênia', 'Quirguistão', 'Russia', 'Tailândia', 'Taiwan', 'Tanzânia',
   'Timor-Leste', 'Togo', 'Tokelau', 'Tonga', 'Trindade e Tobago', 'Tunísia', 'Turcomenistão', 'Turks e Caicos',
   'Turquia', 'Tuvalu', 'Ucrânia', 'Uganda', 'Uruguai', 'Uzbequistão', 'Vanuatu', 'Venezuela', 'Vietnã', 'Zâmbia',
   'Zimbábue'

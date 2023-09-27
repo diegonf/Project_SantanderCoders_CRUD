@@ -3,7 +3,7 @@ import { getCurrentUser, setCurrentUser } from "./services.js";
 
 const wd = window;
 
-export const loadUserLoggedinMenu = () => {
+export const navbarUserInit = () => {
   const currentUser = getCurrentUser();
 
   wd.loggedinContainer.classList.remove('hidden')

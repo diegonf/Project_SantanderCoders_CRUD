@@ -21,6 +21,15 @@ export const getCurrentUser = () => {
   return JSON.parse(sessionStorage.getItem('currentUser'));
 }
 
+export const userAuthenticaded = () => {
+  const currentUser = getCurrentUser();
+  if(currentUser?.authenticaded === true && currentUser?.email !== '' && currentUser?.id !== '') return true
+  else {
+    setCurrentUser(null);
+    return false;
+  }
+}
+
 export const createBreed = (breed) => {
   if(!breed) return;
 

@@ -1,5 +1,5 @@
 import { countryList } from "./countries.js";
-import { createBreed } from "./services.js";
+import { createBreed, readBreeds } from "./services.js";
 
 const wd = window;
 
@@ -88,6 +88,8 @@ const handleFormSubmit = (event) => {
   wd.newBreedForm.reset();
   setDefaultImage();
   alert('Cadastro realizado com sucesso!');
+
+  updateCardsDOM();
 }
 
 const validateBreedName = (name) => {
@@ -134,3 +136,38 @@ const setErrorMsgs = (name, img, country, year, description) => {
   wd.breedDescriptionSpan.innerText = description || '';
 }
 // ☝ Add New Breed - Form Submition
+
+
+export const updateCardsDOM = () => {
+  const breeds = readBreeds();
+  console.log(breeds);
+  
+  wd.listContainer.innerHTML = ''; // clear all cards
+
+  breeds.forEach(breed => {
+    const breedCard = document.createElement('div');
+    breedCard.className = 'border-2 border-solid border-teal-500 rounded-2xl cursor-pointer hover:scale-110 transition flex flex-col max-sm:w-[calc(50%-(2rem/2))] max-sm:max-w-[15rem] max-md:w-[calc(33.33%-(8rem/3))] max-lg:w-[calc(25%-(12rem/4))] w-[calc(20%-16rem/5)]';
+
+    const imgContainer = document.createElement('div');
+    imgContainer.className = 'h-52 xl:h-64 2xl:h-[20rem]';
+
+    const img = document.createElement('img');
+    img.src = breed.img;
+    img.alt = `Foto da raça ${breed.name}`;
+    img.className = 'w-full h-full rounded-t-2xl object-cover object-top bg-teal-300'
+
+    const nameContainer = document.createElement('div');
+    nameContainer.className = 'flex-1 w-full flex justify-center items-center';
+
+    const name = document.createElement('h2');
+    name.className = 'text-center font-bold p-3';
+    name.innerText = breed.name;
+
+    breedCard.appendChild(imgContainer);
+    breedCard.appendChild(nameContainer);
+    imgContainer.appendChild(img);
+    nameContainer.appendChild(name);
+    wd.listContainer.appendChild(breedCard);
+
+  });
+}
