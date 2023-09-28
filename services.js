@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
+
 export const getUsersDB = () => {
   return JSON.parse(localStorage.getItem('usersDB')) || [];
 }
@@ -35,11 +37,42 @@ export const createBreed = (breed) => {
 
   const user = getCurrentUser();
   const breeds = readBreeds();
-  breeds.push(breed);
-  localStorage.setItem(user.id, JSON.stringify(breeds));
+  breeds.push({...breed, id: uuidv4()});
+  setBreedsLS(breeds);
 }
 
 export const readBreeds = () => {
   const user = getCurrentUser();
   return JSON.parse(localStorage.getItem(user.id)) || [];
 }
+
+// const readBreed = (id) => {
+//   const breeds = readBreeds();
+//   const breed = breeds.find(item => item.id === id);
+//   if(!breed) throw new Error("ID não encontrado!");
+
+//   return breed;
+// }
+
+export const deleteBreed = (breed) => {
+  const breeds = readBreeds();
+  const breedIndex = breeds.findIndex(item => item.id === breed.id);
+  if(breedIndex === -1) throw new Error('ID não encontrado!');
+
+  breeds.splice(breedIndex, 1);
+  setBreedsLS(breeds);
+}
+
+export const updateBreed = (id, newBreed) => {
+  const breeds = readBreeds();
+  const breedIndex = breeds.findIndex(item => item.id === id);
+  if(breedIndex === -1) throw new Error("ID não encontrado");
+
+  breeds.splice(breedIndex, 1, newBreed);
+  setBreedsLS(breeds);
+}
+
+const setBreedsLS = (breeds) => {
+  const user = getCurrentUser();
+  localStorage.setItem(user.id, JSON.stringify(breeds));
+};

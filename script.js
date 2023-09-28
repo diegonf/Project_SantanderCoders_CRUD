@@ -1,5 +1,5 @@
 import { navbarUserInit } from "./header.js";
-import { breedFormInit, updateCardsDOM } from "./home.js";
+import { homePageInit } from "./home.js";
 import { userFormInit } from "./login.js";
 import { userAuthenticaded } from "./services.js";
 
@@ -12,9 +12,8 @@ export const updatePageDOM = () => {
   if (userAuthenticaded()) {
     setShowHomePage();
     navbarUserInit();
-    breedFormInit();
-    updateCardsDOM();
-
+    homePageInit();
+    
   } else {
     setShowLoginPage();
     userFormInit();

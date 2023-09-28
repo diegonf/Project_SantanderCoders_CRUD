@@ -1,34 +1,73 @@
 import { countryList } from "./countries.js";
-import { createBreed, readBreeds } from "./services.js";
+import { createBreed, deleteBreed, readBreeds, updateBreed } from "./services.js";
 
 const wd = window;
+let edittingBreed = {status: false, id: ''};
+let isStartOfClickInsideBreedForm = false;
+let isStartOfClickInsideCardModal = false;
 
-export const breedFormInit = () => {
-  // load countries data
+export const homePageInit = () => {
+  // load countries data in the form
   countriesDataInit();
 
   // init form as hidden
   setHideForm();
 
-  wd.btnAddBreed.addEventListener('click', setShowForm);
-  wd.btnCloseBreedForm.addEventListener('click', setHideForm);
+  // init modal as hidden
+  setHideBreedModal();
 
+  // print cards from db (local storage)
+  updateCardsDOM();
+
+  // open and close form modal
+  wd.btnAddBreed.addEventListener('click', () => setShowForm());
+  wd.btnCloseBreedForm.addEventListener('click', setHideForm);
+  wd.document.addEventListener('click', closeFormOnOutsideClick); // close form modal when clicked outside
+  wd.document.addEventListener('mousedown', closeFormOnOutsideClick); // close form modal when clicked outside
+  
+  // load img preview and submit form
   wd.breedImageLink.addEventListener('input', setImagePreview);
-  wd.newBreedForm.addEventListener('submit', handleFormSubmit)
+  wd.newBreedForm.addEventListener('submit', handleFormSubmit);
+  
+  // close card (breed) modal
+  wd.btnCloseBreedModal.addEventListener('click', setHideBreedModal);
+  wd.document.addEventListener('click', closeCardModalOnOutsideClick); // close card modal when clicked outside
+  wd.document.addEventListener('mousedown', closeCardModalOnOutsideClick); // close card modal when clicked outside
 }
 
+// 👇 Form Controls
 const countriesDataInit = () => {
   countryList.forEach(country => {
     const countryOpt = document.createElement('option');
-    countryOpt.value = country.toLowerCase();
+    countryOpt.value = country;
     countryOpt.innerText = country;
     wd.breedCountry.appendChild(countryOpt);
   });
 }
 
-const setHideForm = () => wd.formPopup.classList.add('hidden');
+const setHideForm = () => wd.formModal.classList.add('hidden');
 
-const setShowForm = () => wd.formPopup.classList.remove('hidden');
+const setShowForm = (breed) => {
+  if(breed) {
+    edittingBreed.status = true;
+    edittingBreed.id = breed.id;
+
+    wd.newBreedForm.breedName.value = breed.name; 
+    wd.newBreedForm.breedImageLink.value = breed.img; 
+    wd.newBreedForm.breedCountry.value = breed.country; 
+    wd.newBreedForm.breedYear.value = breed.year; 
+    wd.newBreedForm.breedDescription.value = breed.description; 
+
+    wd.btnSubmitBreedForm.innerText = "Atualizar";
+    setImagePreview();
+  } else {
+    edittingBreed.status = false;
+    edittingBreed.id = '';
+    wd.btnSubmitBreedForm.innerText = "Registrar";
+  }
+
+  wd.formModal.classList.remove('hidden');
+};
 
 const setImagePreview = () => {
   const link = wd.breedImageLink.value;
@@ -55,6 +94,20 @@ const setDefaultImage = () => {
   wd.imgPreview.src = './assets/home-imgs/img-icon.svg';
   wd.imgPreview.className = 'opacity-30'
 }
+
+const closeFormOnOutsideClick = (event) => {
+  if(event.type === 'mousedown') {
+    isStartOfClickInsideBreedForm = wd.formModalContainer.contains(event.target);
+    return;
+  }
+
+  if(isStartOfClickInsideBreedForm) return;
+
+  const clickedOutOfForm = !wd.formModalContainer.contains(event.target) && wd.formModal.contains(event.target);
+  if (clickedOutOfForm) setHideForm();
+  
+}
+// ☝ Form Controls
 
 
 // 👇 Add New Breed - Form Submition
@@ -84,11 +137,19 @@ const handleFormSubmit = (event) => {
     return;
   }
 
-  createBreed(breed);
+  if(edittingBreed.status) {
+    updateBreed(edittingBreed.id, breed);
+    alert('Cadastro atualizado com sucesso!');
+    setHideForm();
+    openBreedModal({...breed, id: edittingBreed.id});
+    edittingBreed = {status: false, id: ''};
+  } else {
+    createBreed(breed);
+    alert('Cadastro realizado com sucesso!');
+  }
+
   wd.newBreedForm.reset();
   setDefaultImage();
-  alert('Cadastro realizado com sucesso!');
-
   updateCardsDOM();
 }
 
@@ -138,10 +199,72 @@ const setErrorMsgs = (name, img, country, year, description) => {
 // ☝ Add New Breed - Form Submition
 
 
-export const updateCardsDOM = () => {
-  const breeds = readBreeds();
-  console.log(breeds);
+// 👇 Breed Modal - Open/close and Edit/Delete Buttons
+const openBreedModal = (breed) => {
+  setShowBreedModal();
+
+  wd.modalImg.src = breed.img;
+  wd.modalTitle.innerText = breed.name;
+  wd.modalCountry.innerText = breed.country;
+  wd.modalYear.innerText = breed.year;
+  wd.modalDescription.innerText = breed.description;
+
+  // removing previous event listener
+  const btnEditClone = wd.btnEditBreed.cloneNode(true);
+  const btnDeleteClone = wd.btnDeleteBreed.cloneNode(true);
+  wd.btnEditBreed.parentNode.replaceChild(btnEditClone, wd.btnEditBreed);
+  wd.btnDeleteBreed.parentNode.replaceChild(btnDeleteClone, wd.btnDeleteBreed);
+
+  // buttons card (breed) modal
+  wd.btnEditBreed.addEventListener('click', () => editBreed(breed));
+  wd.btnDeleteBreed.addEventListener('click', () => delBreed(breed));
+}
+
+const setShowBreedModal = () => {
+  wd.cardModal.classList.remove('hidden');
+}
+
+const setHideBreedModal = () => {
+  wd.cardModal.classList.add('hidden');
+
+  wd.modalImg.src = '#';
+  wd.modalTitle.innerText = 'Raça do Cachorro';
+  wd.modalCountry.innerText = 'País';
+  wd.modalYear.innerText = 'Ano';
+  wd.modalDescription.innerText = 'Descrição da Raça';
+}
+
+const delBreed = (breed) => {
+  deleteBreed(breed);
+
+  alert(`Raça ${breed.name} deletada com sucesso!`);
+  setHideBreedModal();
+  updateCardsDOM();
+}
+
+const editBreed = (breed) => {
+  setHideBreedModal();
+  setShowForm(breed);
+}
+
+const closeCardModalOnOutsideClick = (event) => {
+  if(event.type === 'mousedown') {
+    isStartOfClickInsideCardModal = wd.cardModalContainer.contains(event.target);
+    return;
+  }
+
+  if(isStartOfClickInsideCardModal) return;
+
+  const clickedOutOfCardModal = !wd.cardModalContainer.contains(event.target) && wd.cardModal.contains(event.target);
+    if (clickedOutOfCardModal) setHideBreedModal();
   
+}
+// ☝ Breed Modal - Open/close and Edit/Delete Buttons
+
+
+const updateCardsDOM = () => {
+  const breeds = readBreeds();
+
   wd.listContainer.innerHTML = ''; // clear all cards
 
   breeds.forEach(breed => {
@@ -168,6 +291,8 @@ export const updateCardsDOM = () => {
     imgContainer.appendChild(img);
     nameContainer.appendChild(name);
     wd.listContainer.appendChild(breedCard);
+
+    breedCard.addEventListener('click', () => openBreedModal(breed));
 
   });
 }

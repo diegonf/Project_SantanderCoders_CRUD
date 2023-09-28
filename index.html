@@ -94,7 +94,7 @@
             class="max-sm:h-48 max-lg:h-80 max-2xl:h-96 h-[30rem] w-full object-cover">
         </section>
 
-        <section id="listBreeds">
+        <section id="listBreedsContainer">
           <div class="container mx-auto max-sm:px-4 px-24 py-16">
             <div class="h-16 flex items-center justify-between">
               <h2 class="font-bold text-4xl">Raças Cadastradas</h2>
@@ -107,9 +107,9 @@
             </div>
           </div>
 
-          <div id="formPopup" class="fixed left-0 right-0 top-0 h-screen hidden">
-            <div id="formOverlay" class="w-full h-full bg-gray-500 bg-opacity-50 flex items-center justify-center">
-              <div id="formContainer" class="bg-white p-8 rounded-lg max-h-[95vh] max-w-[95vw] overflow-y-auto overflow-x-hidden relative">
+          <div id="formModal" class="fixed left-0 right-0 top-0 h-screen hidden">
+            <div id="formModalOverlay" class="w-full h-full bg-gray-500 bg-opacity-50 flex items-center justify-center">
+              <div id="formModalContainer" class="bg-white p-8 rounded-lg max-h-[95vh] max-w-[95vw] overflow-y-auto overflow-x-hidden relative">
                 <button id="btnCloseBreedForm" class="absolute right-3 top-1 text-4xl rotate-45 ">+</button>
                 <h1 class="font-bold mb-5 text-3xl text-center">Adicionar Nova Raça</h1>
 
@@ -162,8 +162,42 @@
                     <span id="breedDescriptionSpan" class="text-red-600 text-2xl block"></span>
                   </div>
 
-                  <button class="w-full bg-teal-300 p-3 rounded-lg">Registrar</button>
+                  <button id="btnSubmitBreedForm" class="w-full bg-teal-300 p-3 rounded-lg">Registrar</button>
                 </form>
+              </div>
+            </div>
+          </div>
+
+          <div id="cardModal" class="fixed left-0 right-0 top-0 h-screen ">
+            <div id="cardModalOverlay" class="w-full h-full bg-gray-500 bg-opacity-50 flex items-center justify-center" >
+              <div id="cardModalContainer" class="bg-white p-12 rounded-lg max-h-[95vh] max-w-[95vw] overflow-y-auto overflow-x-hidden relative">
+                <button id="btnCloseBreedModal" class="absolute right-3 top-1 text-4xl rotate-45">+</button>
+                <div class="flex gap-10">
+                  <div class="mb-8">
+                    <img id="modalImg" src="#" alt="Foto da raça" class="h-48 object-cover object-top rounded-lg max-w-[18rem]">
+                  </div>
+                  <div>
+                    <h1 id="modalTitle" class="font-bold text-4xl w-full text-center mb-7 mt-2">Raça do Cachorro</h1>
+                    <p class="mb-5">
+                      <span class="font-bold mr-3">País de Origem:</span>
+                      <span id="modalCountry">País</span>
+                    </p>
+                    <p>
+                      <span class="font-bold mr-3">Ano de Origem:</span>
+                      <span id="modalYear">Ano</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="mb-8">
+                  <p class="font-bold">Descrição: </p>
+                  <div class="bg-gray-100 p-3 rounded-lg min-h-[10rem] max-w-[45rem]">
+                    <p id="modalDescription">Descrição da raça do cachorro </p>
+                  </div>
+                </div>
+                <div class="flex justify-end gap-4">
+                  <button id="btnEditBreed" class="bg-teal-300 w-32 rounded-lg">Edit</button>
+                  <button id="btnDeleteBreed" class="bg-red-300 w-32 rounded-lg">Delete</button>
+                </div>
               </div>
             </div>
           </div>
