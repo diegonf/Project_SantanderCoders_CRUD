@@ -1,5 +1,4 @@
-const CRUD_LINK = 'https://crudcrud.com/api/ca7ee6b776934a729027cae99c79560c';
-const CRUD_LINK2 = 'https://crudcrud.com/api/7052d71a03784ff397c0059cd194e13a';
+const CRUD_LINK = 'https://crudcrud.com/api/913792d798d54f1295179b123a67abb2';
 
 export const getUsersDB = () => {
   return JSON.parse(localStorage.getItem('usersDB')) || [];
@@ -62,14 +61,13 @@ export const readBreeds = async () => {
   // LS
   const user = getCurrentUser();
   const breedsLocalStorage = JSON.parse(localStorage.getItem(user.id));
+  if(breedsLocalStorage) return breedsLocalStorage; 
   
-  // CRUD CRUD
+  // CRUD CRUD (only if no data was found on LS)
   const response = await fetch(getURL());
   if(!response.ok) throw new Error('Não foi possível completar a solicitação!');
   const breedsDB = await response.json();
-  console.log('DB CRUD CRUD: ', breedsDB);
 
-  if(breedsLocalStorage) return breedsLocalStorage; 
   setBreedsLS(breedsDB);
   return breedsDB;
 }

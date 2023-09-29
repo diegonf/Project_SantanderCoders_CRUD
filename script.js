@@ -1,5 +1,5 @@
-import { navbarUserInit } from "./header.js";
-import { homePageInit } from "./home.js";
+import { navbarUserInit, updateTimer } from "./header.js";
+import { homePageInit, updateCardsDOM } from "./home.js";
 import { userFormInit } from "./login.js";
 import { userAuthenticaded } from "./services.js";
 
@@ -13,10 +13,12 @@ export const updatePageDOM = () => {
     setShowHomePage();
     navbarUserInit();
     homePageInit();
+    timerController.startMyInterval();
     
   } else {
     setShowLoginPage();
     userFormInit();
+    timerController.clearMyInterval();
   }
 }
 
@@ -30,5 +32,24 @@ const setShowHomePage = () => {
   wd.loginPage.classList.add('hidden');
 }
 
-// runs once in the begging and then after user interactions in home.js, login.js and header.js
+const timerController = {
+  timer: 5,
+  myInterval: null,
+  handleTimer: function() {
+    updateTimer(this.timer)
+    if(this.timer === 0) {
+      updateCardsDOM();
+      this.timer = 6;
+    }
+    this.timer--;
+  },
+  startMyInterval: function() {
+    this.myInterval = setInterval(() => this.handleTimer(), 1000);
+  },
+  clearMyInterval: function() {
+    clearInterval(this.myInterval);
+  }
+}
+
 updatePageDOM();
+// runs once in the begging and then after user interactions in home.js, login.js and header.js or with setInterval

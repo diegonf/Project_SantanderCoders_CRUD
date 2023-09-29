@@ -18,7 +18,7 @@
 
 #### EXTRA (200XP):
 - ✔ Utilizar CSS para estilizar todas as páginas do formulário (ou alguma biblioteca de CSS) (100XP);
-- A página de listagem deve ser atualizada de 5 em 5 segundos, com base nos dados persistidos (100XP);
+- ✔ A página de listagem deve ser atualizada de 5 em 5 segundos, com base nos dados persistidos (100XP);
 
 #### EXTRA DO EXTRA (400XP):
 - ✔ Criar sistema de Login e Senha, só podendo acessar as páginas do sistema dessa forma.

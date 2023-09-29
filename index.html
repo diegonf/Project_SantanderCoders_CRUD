@@ -28,6 +28,7 @@
           <span id="loggedinMsg"
             class="bg-black rounded-full text-white block w-10 h-10 flex justify-center items-center"></span>
           <img id="logoutIcon" src="./assets/logout.svg" alt="icone de fazer logout" class="cursor-pointer">
+          <span id="timer" class="rounded-full bg-teal-300 w-10 h-10 text-center border border-solid">5</span>
         </div>
       </div>
     </header>
@@ -47,7 +48,7 @@
                 <a id="registerTab"
                   class="inline-block py-3 px-8 pointer cursor-pointer font-bold rounded-t-xl">Registrar</a>
               </div>
-              <form id="loginForm" class="p-8 w-[35rem] bg-white rounded-b-xl">
+              <form id="loginForm" method="post" class="p-8 w-[35rem] bg-white rounded-b-xl">
                 <div class="mb-5 w-full">
                   <label for="email" class="block w-full">Email:</label>
                   <input type="email" name="email" id="email" placeholder="exemplo@email.com"
@@ -62,7 +63,7 @@
                 </div>
                 <button id="btnLogin" class="bg-teal-800 text-white py-3 w-full rounded mt-10">Login</button>
               </form>
-              <form id="registerForm" class="p-8 w-[35rem] bg-white rounded-b-xl hidden">
+              <form id="registerForm" method="post" class="p-8 w-[35rem] bg-white rounded-b-xl hidden">
                 <div class="mb-5 w-full">
                   <label for="registerEmail" class="block w-full">Email:</label>
                   <input type="registerEmail" name="registerEmail" id="registerEmail" placeholder="exemplo@email.com"
@@ -109,11 +110,12 @@
 
           <div id="formModal" class="fixed left-0 right-0 top-0 h-screen hidden">
             <div id="formModalOverlay" class="w-full h-full bg-gray-500 bg-opacity-50 flex items-center justify-center">
-              <div id="formModalContainer" class="bg-white p-8 rounded-lg max-h-[95vh] max-w-[95vw] overflow-y-auto overflow-x-hidden relative">
+              <div id="formModalContainer"
+                class="bg-white p-8 rounded-lg max-h-[95vh] max-w-[95vw] overflow-y-auto overflow-x-hidden relative">
                 <button id="btnCloseBreedForm" class="absolute right-3 top-1 text-4xl rotate-45 ">+</button>
                 <h1 class="font-bold mb-5 text-3xl text-center">Adicionar Nova Raça</h1>
 
-                <form id="newBreedForm">
+                <form id="newBreedForm" method="post">
                   <div class="mb-4">
                     <div class="flex">
                       <label for="breedName" class="inline-block mr-3 flex items-center">Nome:</label>
@@ -169,12 +171,14 @@
           </div>
 
           <div id="cardModal" class="fixed left-0 right-0 top-0 h-screen ">
-            <div id="cardModalOverlay" class="w-full h-full bg-gray-500 bg-opacity-50 flex items-center justify-center" >
-              <div id="cardModalContainer" class="bg-white p-12 rounded-lg max-h-[95vh] max-w-[95vw] overflow-y-auto overflow-x-hidden relative">
+            <div id="cardModalOverlay" class="w-full h-full bg-gray-500 bg-opacity-50 flex items-center justify-center">
+              <div id="cardModalContainer"
+                class="bg-white p-12 rounded-lg max-h-[95vh] max-w-[95vw] overflow-y-auto overflow-x-hidden relative">
                 <button id="btnCloseBreedModal" class="absolute right-3 top-1 text-4xl rotate-45">+</button>
                 <div class="flex gap-10">
                   <div class="mb-8">
-                    <img id="modalImg" src="#" alt="Foto da raça" class="h-48 object-cover object-top rounded-lg max-w-[18rem]">
+                    <img id="modalImg" src="#" alt="Foto da raça"
+                      class="h-48 object-cover object-top rounded-lg max-w-[18rem]">
                   </div>
                   <div>
                     <h1 id="modalTitle" class="font-bold text-4xl w-full text-center mb-7 mt-2">Raça do Cachorro</h1>

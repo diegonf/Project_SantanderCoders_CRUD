@@ -164,7 +164,7 @@ const handleFormSubmit = async (event) => {
 
   wd.newBreedForm.reset();
   setDefaultImage();
-  updateCardsDOM();
+  // updateCardsDOM(); // ignored due to the setInterval script
 }
 
 const validateBreedName = (name) => {
@@ -261,7 +261,7 @@ const delBreed = async (breed) => {
 
   alert(`Raça ${breed.name} deletada com sucesso!`);
   setHideBreedModal();
-  updateCardsDOM();
+  // updateCardsDOM(); // ignored due to the setInterval script
 }
 
 const editBreed = (breed) => {
@@ -284,7 +284,7 @@ const closeCardModalOnOutsideClick = (event) => {
 // ☝ Breed Modal - Open/close and Edit/Delete Buttons
 
 
-const updateCardsDOM = async () => {
+export const updateCardsDOM = async () => {
   let breeds;
   try {
     breeds = await readBreeds();
