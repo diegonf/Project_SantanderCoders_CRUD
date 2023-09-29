@@ -1,4 +1,5 @@
-import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
+const CRUD_LINK = 'https://crudcrud.com/api/ca7ee6b776934a729027cae99c79560c';
+const CRUD_LINK2 = 'https://crudcrud.com/api/7052d71a03784ff397c0059cd194e13a';
 
 export const getUsersDB = () => {
   return JSON.parse(localStorage.getItem('usersDB')) || [];
@@ -32,43 +33,91 @@ export const userAuthenticaded = () => {
   }
 }
 
-export const createBreed = (breed) => {
+const getURL = () => {
+  const currentUser = getCurrentUser();
+  const url = `${CRUD_LINK}/breeds${currentUser.id}`;
+  return url;
+}
+
+export const createBreed = async (breed) => {
   if(!breed) return;
 
-  const user = getCurrentUser();
-  const breeds = readBreeds();
-  breeds.push({...breed, id: uuidv4()});
+  //CRUD CRUD
+  const response = await fetch(getURL(), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(breed)
+  });
+  if(!response.ok) throw new Error('Não foi possível completar a solicitação!');
+
+  const newBreed = await response.json();
+
+  //LS
+  const breeds = await readBreeds();
+  breeds.push(newBreed);
   setBreedsLS(breeds);
 }
 
-export const readBreeds = () => {
+export const readBreeds = async () => {
+  // LS
   const user = getCurrentUser();
-  return JSON.parse(localStorage.getItem(user.id)) || [];
+  const breedsLocalStorage = JSON.parse(localStorage.getItem(user.id));
+  
+  // CRUD CRUD
+  const response = await fetch(getURL());
+  if(!response.ok) throw new Error('Não foi possível completar a solicitação!');
+  const breedsDB = await response.json();
+  console.log('DB CRUD CRUD: ', breedsDB);
+
+  if(breedsLocalStorage) return breedsLocalStorage; 
+  setBreedsLS(breedsDB);
+  return breedsDB;
 }
 
-// const readBreed = (id) => {
-//   const breeds = readBreeds();
-//   const breed = breeds.find(item => item.id === id);
-//   if(!breed) throw new Error("ID não encontrado!");
+export const readBreed = async (_id) => {
+  if(!_id) return;
 
-//   return breed;
-// }
+  // crud crud
+  const response = await fetch(`${getURL()}/${_id}`);
+  if(!response.ok) throw new Error('Não foi possível completar a solicitação!');
 
-export const deleteBreed = (breed) => {
-  const breeds = readBreeds();
-  const breedIndex = breeds.findIndex(item => item.id === breed.id);
+  const breed = await response.json();
+  return breed;
+}
+
+export const deleteBreed = async (breed) => {
+  if(!breed) return;
+  
+  // CRUD CRUD
+  const response = await fetch(`${getURL()}/${breed._id}`, {method: 'DELETE'});
+  if(!response.ok) throw new Error('Não foi possível completar a solicitação!');
+
+  // LS
+  const breeds = await readBreeds();
+  const breedIndex = breeds.findIndex(item => item._id === breed._id);
   if(breedIndex === -1) throw new Error('ID não encontrado!');
 
   breeds.splice(breedIndex, 1);
   setBreedsLS(breeds);
 }
 
-export const updateBreed = (id, newBreed) => {
-  const breeds = readBreeds();
-  const breedIndex = breeds.findIndex(item => item.id === id);
+export const updateBreed = async (_id, newBreed) => {
+  if(!_id || !newBreed) return;
+  
+  // CRUD CRUD
+  const response = await fetch(`${getURL()}/${_id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newBreed)
+  });
+  if(!response.ok) throw new Error('Não foi possível completar a solicitação!');
+
+  // LS
+  const breeds = await readBreeds();
+  const breedIndex = breeds.findIndex(item => item._id === _id);
   if(breedIndex === -1) throw new Error("ID não encontrado");
 
-  breeds.splice(breedIndex, 1, newBreed);
+  breeds.splice(breedIndex, 1, {...newBreed, _id});
   setBreedsLS(breeds);
 }
 

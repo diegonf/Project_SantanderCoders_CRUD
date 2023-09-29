@@ -1,8 +1,8 @@
 import { countryList } from "./countries.js";
-import { createBreed, deleteBreed, readBreeds, updateBreed } from "./services.js";
+import { createBreed, deleteBreed, readBreed, readBreeds, updateBreed } from "./services.js";
 
 const wd = window;
-let edittingBreed = {status: false, id: ''};
+let edittingBreed = { status: false, _id: '' };
 let isStartOfClickInsideBreedForm = false;
 let isStartOfClickInsideCardModal = false;
 
@@ -24,11 +24,11 @@ export const homePageInit = () => {
   wd.btnCloseBreedForm.addEventListener('click', setHideForm);
   wd.document.addEventListener('click', closeFormOnOutsideClick); // close form modal when clicked outside
   wd.document.addEventListener('mousedown', closeFormOnOutsideClick); // close form modal when clicked outside
-  
+
   // load img preview and submit form
   wd.breedImageLink.addEventListener('input', setImagePreview);
   wd.newBreedForm.addEventListener('submit', handleFormSubmit);
-  
+
   // close card (breed) modal
   wd.btnCloseBreedModal.addEventListener('click', setHideBreedModal);
   wd.document.addEventListener('click', closeCardModalOnOutsideClick); // close card modal when clicked outside
@@ -48,21 +48,21 @@ const countriesDataInit = () => {
 const setHideForm = () => wd.formModal.classList.add('hidden');
 
 const setShowForm = (breed) => {
-  if(breed) {
+  if (breed) {
     edittingBreed.status = true;
-    edittingBreed.id = breed.id;
+    edittingBreed._id = breed._id;
 
-    wd.newBreedForm.breedName.value = breed.name; 
-    wd.newBreedForm.breedImageLink.value = breed.img; 
-    wd.newBreedForm.breedCountry.value = breed.country; 
-    wd.newBreedForm.breedYear.value = breed.year; 
-    wd.newBreedForm.breedDescription.value = breed.description; 
+    wd.newBreedForm.breedName.value = breed.name;
+    wd.newBreedForm.breedImageLink.value = breed.img;
+    wd.newBreedForm.breedCountry.value = breed.country;
+    wd.newBreedForm.breedYear.value = breed.year;
+    wd.newBreedForm.breedDescription.value = breed.description;
 
     wd.btnSubmitBreedForm.innerText = "Atualizar";
     setImagePreview();
   } else {
     edittingBreed.status = false;
-    edittingBreed.id = '';
+    edittingBreed._id = '';
     wd.btnSubmitBreedForm.innerText = "Registrar";
   }
 
@@ -96,22 +96,22 @@ const setDefaultImage = () => {
 }
 
 const closeFormOnOutsideClick = (event) => {
-  if(event.type === 'mousedown') {
+  if (event.type === 'mousedown') {
     isStartOfClickInsideBreedForm = wd.formModalContainer.contains(event.target);
     return;
   }
 
-  if(isStartOfClickInsideBreedForm) return;
+  if (isStartOfClickInsideBreedForm) return;
 
   const clickedOutOfForm = !wd.formModalContainer.contains(event.target) && wd.formModal.contains(event.target);
   if (clickedOutOfForm) setHideForm();
-  
+
 }
 // ☝ Form Controls
 
 
 // 👇 Add New Breed - Form Submition
-const handleFormSubmit = (event) => {
+const handleFormSubmit = async (event) => {
   event.preventDefault();
 
   const elem = event.target;
@@ -137,16 +137,30 @@ const handleFormSubmit = (event) => {
     return;
   }
 
-  if(edittingBreed.status) {
-    updateBreed(edittingBreed.id, breed);
+  // Update
+  if (edittingBreed.status) {
+    try {
+      await updateBreed(edittingBreed._id, breed);
+    } catch (error) {
+      alert(`Não foi possível completar a operação!\n${error}`);
+      return;
+    }
     alert('Cadastro atualizado com sucesso!');
     setHideForm();
-    openBreedModal({...breed, id: edittingBreed.id});
-    edittingBreed = {status: false, id: ''};
-  } else {
-    createBreed(breed);
+    openBreedModal(edittingBreed._id);
+    edittingBreed = { status: false, _id: '' };
+  }
+  // Create
+  else {
+    try {
+      await createBreed(breed);
+    } catch (error) {
+      alert(`Não foi possível completar a operação!\n${error}`);
+      return;
+    }
     alert('Cadastro realizado com sucesso!');
   }
+
 
   wd.newBreedForm.reset();
   setDefaultImage();
@@ -200,7 +214,8 @@ const setErrorMsgs = (name, img, country, year, description) => {
 
 
 // 👇 Breed Modal - Open/close and Edit/Delete Buttons
-const openBreedModal = (breed) => {
+const openBreedModal = async (_id) => {
+  const breed = await readBreed(_id);
   setShowBreedModal();
 
   wd.modalImg.src = breed.img;
@@ -234,8 +249,15 @@ const setHideBreedModal = () => {
   wd.modalDescription.innerText = 'Descrição da Raça';
 }
 
-const delBreed = (breed) => {
-  deleteBreed(breed);
+const delBreed = async (breed) => {
+  if ((!confirm(`Tem certeza que deseja deletar a raça ${breed.name}?`))) return;
+
+  try {
+    await deleteBreed(breed);
+  } catch (error) {
+    alert(`Não foi possível completar a operação!\n${error}`);
+    return;
+  }
 
   alert(`Raça ${breed.name} deletada com sucesso!`);
   setHideBreedModal();
@@ -248,22 +270,28 @@ const editBreed = (breed) => {
 }
 
 const closeCardModalOnOutsideClick = (event) => {
-  if(event.type === 'mousedown') {
+  if (event.type === 'mousedown') {
     isStartOfClickInsideCardModal = wd.cardModalContainer.contains(event.target);
     return;
   }
 
-  if(isStartOfClickInsideCardModal) return;
+  if (isStartOfClickInsideCardModal) return;
 
   const clickedOutOfCardModal = !wd.cardModalContainer.contains(event.target) && wd.cardModal.contains(event.target);
-    if (clickedOutOfCardModal) setHideBreedModal();
-  
+  if (clickedOutOfCardModal) setHideBreedModal();
+
 }
 // ☝ Breed Modal - Open/close and Edit/Delete Buttons
 
 
-const updateCardsDOM = () => {
-  const breeds = readBreeds();
+const updateCardsDOM = async () => {
+  let breeds;
+  try {
+    breeds = await readBreeds();
+  } catch (error) {
+    alert(`Não foi possível buscar os dados do DB!\n${error}`);
+    return;
+  }
 
   wd.listContainer.innerHTML = ''; // clear all cards
 
@@ -292,7 +320,7 @@ const updateCardsDOM = () => {
     nameContainer.appendChild(name);
     wd.listContainer.appendChild(breedCard);
 
-    breedCard.addEventListener('click', () => openBreedModal(breed));
+    breedCard.addEventListener('click', () => openBreedModal(breed._id));
 
   });
 }
