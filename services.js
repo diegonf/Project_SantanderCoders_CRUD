@@ -1,4 +1,4 @@
-const CRUD_LINK = 'https://crudcrud.com/api/913792d798d54f1295179b123a67abb2';
+const CRUD_LINK = 'https://crudcrud.com/api/649b0d5bd66145108aa81d3556ddc627';
 
 export const getUsersDB = () => {
   return JSON.parse(localStorage.getItem('usersDB')) || [];
