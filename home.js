@@ -2,9 +2,6 @@ import { countryList } from "./countries.js";
 import { createBreed, deleteBreed, readBreed, readBreeds, updateBreed } from "./services.js";
 
 const wd = window;
-let edittingBreed = { status: false, _id: '' };
-let isStartOfClickInsideBreedForm = false;
-let isStartOfClickInsideCardModal = false;
 
 export const homePageInit = () => {
   // load countries data in the form
@@ -17,7 +14,8 @@ export const homePageInit = () => {
   setHideBreedModal();
 
   // print cards from db (local storage)
-  updateCardsDOM();
+  const firstRender = true;
+  updateCardsDOM(firstRender);
 
   // open and close form modal
   wd.btnAddBreed.addEventListener('click', () => setShowForm());
@@ -36,6 +34,9 @@ export const homePageInit = () => {
 }
 
 // 👇 Form Controls
+let edittingBreed = { status: false, _id: '' };
+let isStartOfClickInsideBreedForm = false;
+
 const countriesDataInit = () => {
   countryList.forEach(country => {
     const countryOpt = document.createElement('option');
@@ -133,7 +134,7 @@ const handleFormSubmit = async (event) => {
 
   if (error) {
     setErrorMsgs(nameValidation.msg, imgValidation.msg, countryValidation.msg, yearValidation.msg, descriptionValidation.msg);
-    setTimeout(setErrorMsgs, 3000);
+    setTimeout(() => setErrorMsgs(), 3000);
     return;
   }
 
@@ -214,10 +215,13 @@ const setErrorMsgs = (name, img, country, year, description) => {
 
 
 // 👇 Breed Modal - Open/close and Edit/Delete Buttons
+let isStartOfClickInsideCardModal = false;
+
 const openBreedModal = async (_id) => {
   const breed = await readBreed(_id);
   setShowBreedModal();
 
+  // fill out modal data
   wd.modalImg.src = breed.img;
   wd.modalTitle.innerText = breed.name;
   wd.modalCountry.innerText = breed.country;
@@ -266,7 +270,7 @@ const delBreed = async (breed) => {
 
 const editBreed = (breed) => {
   setHideBreedModal();
-  setShowForm(breed);
+  setShowForm(breed); // opens form filled out with breed data
 }
 
 const closeCardModalOnOutsideClick = (event) => {
@@ -284,10 +288,10 @@ const closeCardModalOnOutsideClick = (event) => {
 // ☝ Breed Modal - Open/close and Edit/Delete Buttons
 
 
-export const updateCardsDOM = async () => {
+export const updateCardsDOM = async (firstRender) => {
   let breeds;
   try {
-    breeds = await readBreeds();
+    breeds = await readBreeds(firstRender);
   } catch (error) {
     alert(`Não foi possível buscar os dados do DB!\n${error}`);
     return;

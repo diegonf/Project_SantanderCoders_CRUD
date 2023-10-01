@@ -1,5 +1,5 @@
 import { updatePageDOM } from "./script.js";
-import { setCurrentUser, getUsersDB, addNewUserToDB } from "./services.js";
+import { addNewUserToDB, userLogin } from "./services.js";
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 
 const wd = window;
@@ -58,22 +58,18 @@ const handleRegisterFormSubmit = (event) => {
   const emailValidation = validateEmail(email);
   const passwordValidation = validatePassword(password);
 
-  if(!emailValidation.valid || !passwordValidation.valid) {
-    wd.registerEmailSpan.innerText = emailValidation.msg;
-    wd.registerPassSpan.innerText = passwordValidation.msg;
-
-    setTimeout(() => {
-      wd.registerEmailSpan.innerText = '';
-      wd.registerPassSpan.innerText = '';
-    }, 3000);
-
+  if (!emailValidation.valid || !passwordValidation.valid) {
+    setRegisterErrorMsgs(emailValidation.msg, passwordValidation.msg);
     return;
   }
 
-  addNewUserToDB({email, password, id: uuidv4()});
-  wd.registerForm.reset();
-
-  alert("Usuário cadastrado com sucesso!");
+  try {
+    addNewUserToDB({ email, password, id: uuidv4() });
+    wd.registerForm.reset();
+    alert("Usuário cadastrado com sucesso!");
+  } catch (error) {
+    setRegisterErrorMsgs('', error);   
+  }
 }
 
 const validateEmail = (email) => {
@@ -81,12 +77,9 @@ const validateEmail = (email) => {
 
   const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const invalidEmail = !regex.test(email);
-  if (invalidEmail) return {valid: false, msg: 'Email invalido. Email deve ser no formato email@exemplo.com' };
+  if (invalidEmail) return { valid: false, msg: 'Email invalido. Email deve ser no formato email@exemplo.com' };
 
-  const usersEmail = getUsersDB().map(item => item.email);
-  if(usersEmail.includes(email)) return { valid: false, msg: 'Email já cadastrado, favor realizar login!' }
-
-  return {valid: true, msg: ''};
+  return { valid: true, msg: '' };
 }
 
 const validatePassword = (password) => {
@@ -95,6 +88,16 @@ const validatePassword = (password) => {
   if (password.length < 3) return { valid: false, msg: 'Password precisa ter pelo menos 3 caracteres!' };
 
   return { valid: true, msg: '' };
+}
+
+const setRegisterErrorMsgs = (emailMsg, passwordMsg) => {
+  wd.registerEmailSpan.innerText = emailMsg;
+  wd.registerPassSpan.innerText = passwordMsg;
+
+  setTimeout(() => {
+    wd.registerEmailSpan.innerText = '';
+    wd.registerPassSpan.innerText = '';
+  }, 3000);
 }
 // ☝ Register - Form Submit
 
@@ -106,28 +109,27 @@ const handleLoginFormSubmit = (event) => {
   const email = event.target.email.value;
   const password = event.target.password.value;
 
-  if(email === '' || password === '') {
+  if (email === '' || password === '') {
     const emailMsg = email === '' ? 'Email não pode ser vazio!' : ''
     const passwordMsg = password === '' ? 'Password não pode ser vazio' : ''
-    setErrorMsg(emailMsg, passwordMsg);
+    setLoginErrorMsgs(emailMsg, passwordMsg);
 
     return;
   }
 
-  const user = checkUserCredentials(email, password);
-  if(!user) {
+  const user = userLogin(email, password);
+  if (!user) {
     setErrorMsg('', 'Usuário ou senha incorretos!');
     return;
   }
 
   alert("Login realizado com sucesso!")
-  setCurrentUser(user);
   wd.loginForm.reset();
 
   updatePageDOM();
 }
 
-const setErrorMsg = (emailMsg, passwordMsg) => {
+const setLoginErrorMsgs = (emailMsg, passwordMsg) => {
   wd.loginEmailSpan.innerText = emailMsg;
   wd.loginPasswordSpan.innerText = passwordMsg;
 
@@ -135,16 +137,6 @@ const setErrorMsg = (emailMsg, passwordMsg) => {
     wd.loginEmailSpan.innerText = '';
     wd.loginPasswordSpan.innerText = '';
   }, 3000);
-}
-
-const checkUserCredentials = (email, password) => {
-  const users = getUsersDB();
-  const user = users.find(item => item.email === email);
-
-  if(!user) return false;
-  if(user.password !== password) return false;
-
-  return user;
 }
 // ☝ Login - Form Submit
 

@@ -1,7 +1,7 @@
-import { navbarUserInit, updateTimer } from "./header.js";
+import { navbarUserInit, updateNavbarTimer } from "./header.js";
 import { homePageInit, updateCardsDOM } from "./home.js";
 import { userFormInit } from "./login.js";
-import { userAuthenticaded } from "./services.js";
+import { currentUser } from "./services.js";
 
 const wd = window;
 
@@ -9,7 +9,7 @@ export const updatePageDOM = () => {
   // set initial value to show login page
   setShowLoginPage();
 
-  if (userAuthenticaded()) {
+  if (currentUser()) {
     setShowHomePage();
     navbarUserInit();
     homePageInit();
@@ -36,12 +36,11 @@ const timerController = {
   timer: 5,
   myInterval: null,
   handleTimer: function() {
-    updateTimer(this.timer)
-    if(this.timer === 0) {
+    updateNavbarTimer(this.timer--)
+    if(this.timer === -1) {
       updateCardsDOM();
-      this.timer = 6;
+      this.timer = 5;
     }
-    this.timer--;
   },
   startMyInterval: function() {
     this.myInterval = setInterval(() => this.handleTimer(), 1000);

@@ -1,5 +1,5 @@
 import { updatePageDOM } from "./script.js";
-import { getCurrentUser, setCurrentUser } from "./services.js";
+import { currentUser, userLogout } from "./services.js";
 
 const wd = window;
 
@@ -11,15 +11,15 @@ export const navbarUserInit = () => {
 }
 
 const setUserLoggedinControls = () => {
-  const currentUser = getCurrentUser();
+  const user = currentUser();
   wd.loggedinContainer.classList.remove('hidden')
-  wd.loggedinMsg.innerText = currentUser.email[0].toUpperCase();
+  wd.loggedinMsg.innerText = user.email[0].toUpperCase();
 }
 
 const logout = () => {
   if (!confirm('Tem certeza que deseja deslogar?')) return;
 
-  setCurrentUser(null);
+  userLogout();
   setHideUserLoggedinControls();
   updatePageDOM();
 }
@@ -28,6 +28,6 @@ const setHideUserLoggedinControls = () => {
   wd.loggedinContainer.classList.add('hidden');
 }
 
-export const updateTimer = (timer) => {
+export const updateNavbarTimer = (timer) => {
   wd.timer.innerText = timer;
 }
