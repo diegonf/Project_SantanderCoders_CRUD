@@ -1,5 +1,8 @@
 # CRUD - Catálogo de Raças Caninas
 
+## Projeto
+- Link: https://diegonf.github.io/Project_SantanderCoders_CRUD/
+
 ## Requisitos
 #### PRINCIPAL (1000XP)
 - ✔ Criar um CRUD completo usando HTML/CSS/JS e funcional (100XP); 
@@ -23,20 +26,7 @@
 #### EXTRA DO EXTRA (400XP):
 - ✔ Criar sistema de Login e Senha, só podendo acessar as páginas do sistema dessa forma.
 
-## O que pode ser cadastrado?
-- Nome: string 
-- Descrição: txtarea
-- Foto: file
-- Preço: number
-- Ano de origem: date só ano
-- País de origem: select c/ opção de pesquisa
-- Curiosidades: string[]
 
-## Ideia
-- Criar menu + banner e footer como componentes
-- Criar página de login com abas Login e Registro
-  - Essa página vai utilizar os componentes do 1o item
-- Criar página Home, 
 
 
 
