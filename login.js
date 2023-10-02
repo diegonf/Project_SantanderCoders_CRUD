@@ -119,7 +119,7 @@ const handleLoginFormSubmit = (event) => {
 
   const user = userLogin(email, password);
   if (!user) {
-    setErrorMsg('', 'Usuário ou senha incorretos!');
+    setLoginErrorMsgs('', 'Usuário ou senha incorretos!');
     return;
   }
 

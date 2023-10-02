@@ -46,7 +46,11 @@ const countriesDataInit = () => {
   });
 }
 
-const setHideForm = () => wd.formModal.classList.add('hidden');
+const setHideForm = () => {
+  wd.formModal.classList.add('hidden');
+  wd.newBreedForm.reset();
+  setDefaultImage();
+}
 
 const setShowForm = (breed) => {
   if (breed) {
@@ -68,7 +72,7 @@ const setShowForm = (breed) => {
   }
 
   wd.formModal.classList.remove('hidden');
-};
+}
 
 const setImagePreview = () => {
   const link = wd.breedImageLink.value;

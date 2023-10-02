@@ -5,7 +5,7 @@
 - ✔ Criar um CRUD completo usando HTML/CSS/JS e funcional (100XP); 
 - ✔ O tema será aleatório e pode ser gerado pelo link no canal #tema-atividade-principal (podem acessar e rodar a roleta, tirem um print e mandem lá);
 - ✔ Operação de CREATE deve ser feita através da submissão de um form (100XP);
-- ✔ Não se deve repetir o mesmo tipo de campo mais de duas vezes, pelo menos 5 campos, tentando usar tipos diferentes (como em sala);
+  - ✔ Não se deve repetir o mesmo tipo de campo mais de duas vezes, pelo menos 5 campos, tentando usar tipos diferentes (como em sala);
 - ✔ Operação de READ deve ser contemplada de duas formas (abaixo);
   - ✔ A primeira listando todas as entradas (uma lista em formato de catálogo, com imagens de preferência) (100XP);
   - ✔ E um pop-up (ou outro tipo de visualização) ao clicar em cada item da lista (READ de um elemento) (100XP);
