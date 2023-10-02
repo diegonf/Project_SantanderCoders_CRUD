@@ -1,6 +1,13 @@
 # CRUD - Catálogo de Raças Caninas
 
-## Requisitos
+## Projeto
+- Santander Coders - Curso de Desenvolvimento Web - Angular
+- Github: https://github.com/diegonf/Project_SantanderCoders_CRUD
+- Publicação: https://diegonf.github.io/Project_SantanderCoders_CRUD/
+- Utilizado API do crudcrud: https://crudcrud.com/
+  - Alterar URL do crudcrud no arquivo service.js para o site funcionar.
+
+## Requisitos do Projeto
 #### PRINCIPAL (1000XP)
 - ✔ Criar um CRUD completo usando HTML/CSS/JS e funcional (100XP); 
 - ✔ O tema será aleatório e pode ser gerado pelo link no canal #tema-atividade-principal (podem acessar e rodar a roleta, tirem um print e mandem lá);
@@ -23,20 +30,6 @@
 #### EXTRA DO EXTRA (400XP):
 - ✔ Criar sistema de Login e Senha, só podendo acessar as páginas do sistema dessa forma.
 
-## O que pode ser cadastrado?
-- Nome: string 
-- Descrição: txtarea
-- Foto: file
-- Preço: number
-- Ano de origem: date só ano
-- País de origem: select c/ opção de pesquisa
-- Curiosidades: string[]
-
-## Ideia
-- Criar menu + banner e footer como componentes
-- Criar página de login com abas Login e Registro
-  - Essa página vai utilizar os componentes do 1o item
-- Criar página Home, 
 
 
 
