@@ -1,4 +1,4 @@
-const CRUD_LINK = 'https://crudcrud.com/api/26378c6ff60e47499ecd31083934e457';
+const CRUD_LINK = 'https://crudcrud.com/api/277b6c206311461696d4af60f4c0505f';
 
 // 👇 user Register and Login
 export const addNewUserToDB = (user) => {
